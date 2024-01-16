@@ -110,20 +110,14 @@ class HFLM(LM):
             self._device = self._model.device
 
             self._config = self._model.config
-
-            if tokenizer:
-                assert isinstance(
-                    tokenizer, transformers.PreTrainedTokenizer
-                ) or isinstance(tokenizer, transformers.PreTrainedTokenizerFast)
-                self.tokenizer = tokenizer
-            else:
-                # Get tokenizer
-                model_name = self._model.name_or_path
-                self.tokenizer = transformers.AutoTokenizer.from_pretrained(
+            # Get tokenizer
+            model_name = self._model.name_or_path
+            self.tokenizer = transformers.AutoTokenizer.from_pretrained(
                     model_name,
                     revision=revision,
                     trust_remote_code=trust_remote_code,
                     use_fast=use_fast_tokenizer,
+                    pad_token="[PAD]"
                 )
 
         else:
